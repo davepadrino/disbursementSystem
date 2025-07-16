@@ -1,0 +1,46 @@
+# Minimal Rails App with Health Check
+
+.PHONY: setup build up down logs console migrate db-reset health clean
+
+# Initial setup - builds and starts the app
+setup: build up migrate
+
+# Build Docker image
+build:
+	@echo "Building Docker image..."
+	docker-compose build
+
+# Start services
+up:
+	@echo "Starting services..."
+	docker-compose up -d
+
+# Stop services
+stop:
+	@echo "Stopping services..."
+	docker-compose stop
+
+# View logs
+logs:
+	docker-compose logs -f
+
+# Open Rails console
+console:
+	docker-compose exec web bundle exec rails console
+
+# Run database migrations
+migrate:
+	docker-compose exec web bundle exec rails db:create db:migrate
+
+# Reset database
+db-reset:
+	docker-compose exec web bundle exec rails db:drop db:create db:migrate
+
+# Check health status
+health:
+	@echo "Checking health status..."
+	curl -f http://localhost:3000/up || echo "Health check failed"
+
+# Clean up Docker resources
+clean:
+	docker-compose down -v --remove-orphans
