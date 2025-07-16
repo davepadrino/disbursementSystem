@@ -1,16 +1,17 @@
 # README
 
-# Minimal Rails App with Health Check
+# Disbursement system
 
-This is a minimal Rails application configured to run in Docker with a health check endpoint.
+...
 
 ## Features
 
-- Rails 7.2.2 application
-- MySQL database
-- Health check endpoint at `/up`
-- Docker containerization
-- Minimal dependencies
+- Setup a docker repository production ready for a rails app
+- Setup data model
+- Create DB migrations
+- Inject data via rake task and store it in DB
+- Add business logic services / controllers and routes
+- Add test suite and specs
 
 ## Getting Started
 
@@ -42,13 +43,13 @@ This is a minimal Rails application configured to run in Docker with a health ch
 - `make setup` - Build and start the application
 - `make build` - Build Docker image
 - `make up` - Start services
-- `make down` - Stop services
+- `make stop` - Stop services
 - `make logs` - View logs
 - `make console` - Open Rails console
 - `make migrate` - Run database migrations
 - `make db-reset` - Reset database
 - `make health` - Check health status
-- `make clean` - Clean up Docker resources
+- `make clean` - Clean up Docker resources for this project
 
 ## Health Check
 
@@ -63,6 +64,3 @@ The application uses MySQL 8.0 with the following default configuration:
 
 - Database: `sequra_development`
 - Username: `sequra_user`
-- Password: `root`
-- Host: `db`
-- Port: `3306`
