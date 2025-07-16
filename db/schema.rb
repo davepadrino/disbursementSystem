@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_07_16_170355) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_16_175310) do
+  create_table "disbursements", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "merchant_id", null: false
+    t.string "reference", null: false
+    t.date "disbursement_date", null: false
+    t.decimal "total_amount", precision: 10, scale: 2, null: false
+    t.decimal "total_fees", precision: 10, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["merchant_id", "reference"], name: "index_disbursements_on_merchant_id_and_reference", unique: true
+    t.index ["merchant_id"], name: "index_disbursements_on_merchant_id"
+  end
+
   create_table "merchants", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "reference", null: false
     t.string "email", null: false
@@ -21,4 +33,32 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_16_170355) do
     t.datetime "updated_at", null: false
     t.index ["reference"], name: "index_merchants_on_reference", unique: true
   end
+
+  create_table "monthly_fees", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "merchant_id", null: false
+    t.string "month", null: false
+    t.decimal "total_fees", precision: 10, scale: 2, null: false
+    t.decimal "charged_fee", precision: 10, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["merchant_id", "month"], name: "index_monthly_fees_on_merchant_id_and_month", unique: true
+    t.index ["merchant_id"], name: "index_monthly_fees_on_merchant_id"
+  end
+
+  create_table "orders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "merchant_id", null: false
+    t.decimal "amount", precision: 10, scale: 2, null: false
+    t.bigint "disbursement_id"
+    t.decimal "commission_fee", precision: 10, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_orders_on_created_at"
+    t.index ["disbursement_id"], name: "index_orders_on_disbursement_id"
+    t.index ["merchant_id"], name: "index_orders_on_merchant_id"
+  end
+
+  add_foreign_key "disbursements", "merchants"
+  add_foreign_key "monthly_fees", "merchants"
+  add_foreign_key "orders", "disbursements"
+  add_foreign_key "orders", "merchants"
 end

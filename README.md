@@ -21,9 +21,9 @@ No-SQL DB was considered (documents or even graphs based) but since the relation
 
 ## Features
 
-- Setup a docker repository production ready for a rails app
-- Setup data model
-- Create DB migrations
+- Setup a docker repository production ready for a rails app ✅
+- Setup data model ✅
+- Create DB migrations ✅
 - Inject data via rake task and store it in DB
 - Add business logic services / controllers and routes
 - Add test suite and specs
