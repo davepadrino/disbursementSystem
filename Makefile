@@ -26,11 +26,21 @@ logs:
 
 # Open Rails console
 console:
-	docker-compose exec web bundle exec rails console
+	docker-compose exec web bundle exec rails c
+
+# Generate migration
+generate-migration:
+ifndef NAME
+	@echo "Usage: make generate-migration NAME=<migration_name>"
+	@echo "Example: make generate-migration NAME=CreateUsers"
+	@exit 1
+endif
+	docker-compose exec web bundle exec rails generate migration $(NAME)
 
 # Run database migrations
 migrate:
-	docker-compose exec web bundle exec rails db:create db:migrate
+	@echo "Migrating database..."
+	docker-compose exec web bundle exec rails db:migrate
 
 # Reset database
 db-reset:
