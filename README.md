@@ -17,6 +17,15 @@ Creating a relational schema also prepares everything for scalability, in opposi
 Also, handle in-memory data wasn't the best solution due to the amount of data wwe're handling.
 No-SQL DB was considered (documents or even graphs based) but since the relation between Merchants and Orders is pretty clear, we have a clear winner.
 
+## Assumptions
+
+- Dates are correct and in the same timezone
+- All order have merchants associated (we add everything in the import_data script but still grouped by merchant)
+
+## Improvements
+
+- Don't know if I'll have time to do this, but an improvement we could do to improve times given the orders table, is create partitions in the table by merchant so the queries are quicker.
+
 ...
 
 ## Features
@@ -49,8 +58,20 @@ No-SQL DB was considered (documents or even graphs based) but since the relation
    ```
 
 4. **Access Rails console:**
+
    ```bash
    make console
+   ```
+
+5. **Import data from the CSV files:**
+
+   ```bash
+   make import-data
+   ```
+
+6. **Create a migration file given a name:**
+   ```bash
+   make generate-migration
    ```
 
 ## Available Commands
@@ -62,6 +83,7 @@ No-SQL DB was considered (documents or even graphs based) but since the relation
 - `make logs` - View logs
 - `make console` - Open Rails console
 - `make migrate` - Run database migrations
+- `make import-data` - Run screipt to read CSV files and fill the database
 - `make db-reset` - Reset database
 - `make health` - Check health status
 - `make clean` - Clean up Docker resources for this project
@@ -75,7 +97,8 @@ The application includes a health check endpoint at `/up` that returns:
 
 ## Database
 
-The application uses MySQL 8.0
+The application uses MySQL 8.0.
+I made a mistake by lettign the default id for the merchants table (\*) and instead of recreating everything taking advantage that the project is brand new, i preferred to do migrations to fix this so it can be a similar to a real case scenario.
 
 According to my understanding of the problem, we have a relation like this:
 

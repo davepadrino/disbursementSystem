@@ -3,7 +3,7 @@
 .PHONY: setup build up stop logs console migrate db-reset health clean
 
 # Initial setup - builds and starts the app
-setup: build up migrate
+setup: build up migrate import-data
 
 # Build Docker image
 build:
@@ -41,6 +41,10 @@ endif
 migrate:
 	@echo "Migrating database..."
 	docker-compose exec web bundle exec rails db:migrate
+
+import-data:
+	@echo "Starting CSV import..."
+	docker-compose exec web bundle exec rails runner scripts/import_data.rb
 
 # Reset database
 db-reset:

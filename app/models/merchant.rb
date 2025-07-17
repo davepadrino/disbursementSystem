@@ -5,7 +5,7 @@ class Merchant < ApplicationRecord
   has_many :disbursements, dependent: :destroy
   has_one :monthly_fees, dependent: :destroy
 
-  enum disbursement_frequency: { daily: 'daily', weekly: 'weekly' }
+  enum disbursement_frequency: { daily: 'DAILY', weekly: 'WEEKLY' }
 
   validates :reference, presence: true, uniqueness: true
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }

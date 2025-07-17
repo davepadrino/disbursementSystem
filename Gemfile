@@ -10,6 +10,8 @@ gem "puma", ">= 5.0"
 # Use Bootsnap to speed up boot times
 gem "bootsnap", require: false
 
+gem 'csv'
+
 group :development, :test do
   gem 'rspec-rails'
 

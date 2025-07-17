@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_07_16_175310) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_17_095355) do
   create_table "disbursements", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "merchant_id", null: false
+    t.string "merchant_id", null: false
     t.string "reference", null: false
     t.date "disbursement_date", null: false
     t.decimal "total_amount", precision: 10, scale: 2, null: false
@@ -23,7 +23,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_16_175310) do
     t.index ["merchant_id"], name: "index_disbursements_on_merchant_id"
   end
 
-  create_table "merchants", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "merchants", id: :string, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "reference", null: false
     t.string "email", null: false
     t.date "live_on", null: false
@@ -35,7 +35,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_16_175310) do
   end
 
   create_table "monthly_fees", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "merchant_id", null: false
+    t.string "merchant_id", null: false
     t.string "month", null: false
     t.decimal "total_fees", precision: 10, scale: 2, null: false
     t.decimal "charged_fee", precision: 10, scale: 2, null: false
@@ -45,8 +45,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_16_175310) do
     t.index ["merchant_id"], name: "index_monthly_fees_on_merchant_id"
   end
 
-  create_table "orders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "merchant_id", null: false
+  create_table "orders", id: :string, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "merchant_id", null: false
     t.decimal "amount", precision: 10, scale: 2, null: false
     t.bigint "disbursement_id"
     t.decimal "commission_fee", precision: 10, scale: 2
