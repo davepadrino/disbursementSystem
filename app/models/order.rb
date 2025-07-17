@@ -14,6 +14,5 @@ class Order < ApplicationRecord
 
   def round_values
     self.amount = amount.round(2)
-    self.commission_fee = commission_fee&.round(2)
   end
 end

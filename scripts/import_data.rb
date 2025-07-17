@@ -41,6 +41,7 @@ def import_orders
       id: row['id'],
       merchant_id: merchant_id,
       amount: row['amount'].to_f,
+      commission_fee: CommissionCalculator.new(row['amount']).calculate,
       created_at: DateTime.parse(row['created_at']),
       updated_at: DateTime.current
     }
@@ -58,5 +59,5 @@ def import_orders
 end
 p "Starting data import..."
 
-import_merchants
+# import_merchants
 import_orders

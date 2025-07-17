@@ -46,6 +46,11 @@ import-data:
 	@echo "Starting CSV import..."
 	docker-compose exec web bundle exec rails runner scripts/import_data.rb
 
+test-file:
+	@echo "Usage make test-file file=<file_route>"
+	@echo "Running tests..."
+	docker-compose exec web bundle exec rspec ${file}
+
 # Reset database
 db-reset:
 	docker-compose exec web bundle exec rails db:drop db:create db:migrate
