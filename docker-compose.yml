@@ -26,7 +26,8 @@ services:
       db:
         condition: service_healthy
     environment:
-      - DATABASE_URL=mysql2://sequra_user:root@db:3306/sequra_development
+      # left this for easier development but this must be in a secret file created by kubernetes or whatever system we use
+      - DATABASE_URL=mysql2://sequra_user:root@db:3306/sequra_development 
       - RAILS_ENV=development
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/up"]

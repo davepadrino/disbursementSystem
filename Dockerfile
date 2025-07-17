@@ -29,5 +29,6 @@ COPY . .
 # Expose port
 EXPOSE 3000
 
-# Start the Rails server
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+# Remove server.pid if it exists to avoid issues on startup
+CMD rm -f tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0
+

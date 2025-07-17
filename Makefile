@@ -1,6 +1,6 @@
-# Minimal Rails App with Health Check
+# Makefile for managing the disbursement system application
 
-.PHONY: setup build up down logs console migrate db-reset health clean
+.PHONY: setup build up stop logs console migrate db-reset health clean
 
 # Initial setup - builds and starts the app
 setup: build up migrate
