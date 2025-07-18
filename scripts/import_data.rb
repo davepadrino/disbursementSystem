@@ -41,6 +41,9 @@ def import_orders
       id: row['id'],
       merchant_id: merchant_id,
       amount: row['amount'].to_f,
+       # better to calculate `commission_fee` in load time than having to read the whole orders later
+       # also i've done this here to calculate the comission for the existing orders
+       # since `insert_all` bypasses ActiveRecord callbacks and validations.
       commission_fee: CommissionCalculator.new(row['amount']).calculate,
       created_at: DateTime.parse(row['created_at']),
       updated_at: DateTime.current
