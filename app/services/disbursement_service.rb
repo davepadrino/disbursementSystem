@@ -10,7 +10,6 @@ class DisbursementService
 
   def process_disbursements
     # to aovid matrix-like structures
-    p "Processing disbursements for #{@date}..."
     FREQUENCIES.flat_map do |frequency, processor|
       merchants = find_merchants_by_frequency(frequency)
       send(processor, merchants)

@@ -56,8 +56,13 @@ disbursements:
 	@echo "Running disbursement tasks..."
 	docker-compose exec web bundle exec rake disbursements:process
 
+# Run all disbursement to calculate data to populate reports
+disbursements-all:
+	@echo "Running disbursement tasks..."
+	docker-compose exec web bundle exec rake disbursements:process_all
+
 # Run monthly_fee tasks manually (for testing/development purposes)
-monthly_fees:
+monthly-fees:
 	@echo "Running monthly_fee tasks..."
 	docker-compose exec web bundle exec rake monthly_fees:process
 
