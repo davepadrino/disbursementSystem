@@ -66,6 +66,11 @@ monthly-fees:
 	@echo "Running monthly_fee tasks..."
 	docker-compose exec web bundle exec rake monthly_fees:process
 
+# Run all monthly_fee to calculate data to populate reports
+monthly-all:
+	@echo "Running monthly_fee tasks..."
+	docker-compose exec web bundle exec rake monthly_fees:process_all
+
 # Generate reports
 report:
 	@echo "Generating reports..."

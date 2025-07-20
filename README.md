@@ -4,7 +4,7 @@
 
 ## Intro
 
-All of this project, decisions and architecture is based in my understanding of the problem that can always be wrong.
+All of this project, decisions and architecture is based in my understanding of the problem (that can always be wrong).
 Also regarding selection of the technologies, they were chosen since is what I've been working with the past months and want to learn and improve in this aspect 💪🏾
 
 ## Decision making
@@ -21,6 +21,7 @@ No-SQL DB was considered (documents or even graphs based) but since the relation
 
 - Dates are correct and in the same timezone
 - All order have merchants associated (we add everything in the import_data script but still grouped by merchant)
+- Execution automatized for more years since the first merchant `live_on` date to the current and increasing automatically.
 
 ## Improvements
 
@@ -31,7 +32,8 @@ No-SQL DB was considered (documents or even graphs based) but since the relation
 - A kubernetes (for instance) cronjob instead of a native one to run the task, will give us more control and on-demand start.
 - Some Ids in the DB must be UUIDs for security reasons (just in case we don't want to expose the number of records)
 - Add more tests, I added few of them for timing reasons.
-  ...
+- rake tasks to process historical data, NEED refactor to optimize time (batch or parallelism) and probably add indexes to improve even more the performance of the queries (order-created_at, order-merchants-dates, merchants-frequency)
+- Create the proper queries to test the table results are correct
 
 ## Features
 
@@ -40,47 +42,45 @@ No-SQL DB was considered (documents or even graphs based) but since the relation
 - Create DB migrations ✅
 - Inject data via rake task and store it in DB ✅
 - Add disburshment logic ✅
-- Add monthtly fee logic
-- Add final report logic
-- Add daily processing task
+- Add monthtly fee logic ✅
+- Add final report logic ✅
+- Add daily processing task (yes and no)
 - Add test suite and specs
 
 ## Getting Started
 
 1. **Setup and start the application:**
+   Technically this must install all dependencies, start servers, create migrations and import CSV data, for more information, check the Makefile
 
-   ```bash
-   make setup
-   ```
+```bash
+make setup
+```
 
-2. **Check if the application is running:**
+2. **Process all the disbursements (historical ones):**
 
-   ```bash
-   make health
-   ```
+```bash
+make disbursements-all
+```
 
-3. **View logs:**
+3. **Process the monthly_fees for the existing disbursements:**
 
-   ```bash
-   make logs
-   ```
+```bash
+make monthly-fees-all
+```
 
-4. **Access Rails console:**
+4. **Generate reports in console:**
 
-   ```bash
-   make console
-   ```
+```bash
+make report
+```
 
-5. **Import data from the CSV files:**
+## Additional commands in the Makefile
 
-   ```bash
-   make import-data
-   ```
+1. **Create a migration file given a name:**
 
-6. **Create a migration file given a name:**
-   ```bash
-   make generate-migration
-   ```
+```bash
+make generate-migration NAME=<migration-name>
+```
 
 ## Available Commands
 
@@ -92,8 +92,13 @@ No-SQL DB was considered (documents or even graphs based) but since the relation
 - `make console` - Open Rails console
 - `make migrate` - Run database migrations
 - `make import-data` - Run screipt to read CSV files and fill the database
+- `make test-file` - To run tests for a certain file (example in Makefile)
+- `make disbursements` - Run disbursements for a current date
+- `make disbursements-all`- Run historical disbursements
+- `make monthly-fee-all` - Run monthly fees calculation for historical disbursements
+- `make monthly-fee` - Run disbursements for current date
+- `make report` - Print in screen report for requested data
 - `make db-reset` - Reset database
-- `make health` - Check health status
 - `make clean` - Clean up Docker resources for this project
 
 ## Health Check
@@ -194,3 +199,26 @@ SELECT
 FROM orders o
 WHERE o.disbursement_id = '<insert_disbursement_id>';
 ```
+
+### Since no deploy/cronjob pod could be created
+
+This is a built in solution, altought I'd stick with a dedicated pod for this processing to avoid consume resources from the API pod when deployed.
+
+```bash
+crontab -e
+
+# Process disbursements every day at 8am
+0 8 * * * cd <project_directory> && ✗ make disbursements
+
+# Check for monthly fees daily during first day of month
+0 9 1 * * cd <project_directory> && make monthly-fees
+```
+
+# Final report
+
+| Year | # of disbursements | Amount disbursed to merchants | Amount of order fees | # of monthly fees charged | Amount of monthly fees charged |
+| ---- | ------------------ | ----------------------------- | -------------------- | ------------------------- | ------------------------------ |
+| 2022 | 1547               | 37852696.71                   | 338976.04            | 126                       | 2899.16                        |
+| 2023 | 10363              | 189684161.2                   | 1703961.96           | 154                       | 2863.56                        |
+| 2024 | 0                  | 0.0                           | 0.0                  | 408                       | 10080.0                        |
+| 2025 | 0                  | 0.0                           | 0.0                  | 204                       | 5040.0                         |

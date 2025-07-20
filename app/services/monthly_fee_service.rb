@@ -6,7 +6,6 @@ class MonthlyFeeService
 
   def calculate_monthly_fees
     # decided to use find_each to avoid loading all merchants into memory at once (in case of large datasets)
-    p "Calculating monthly fee for all merchants..."
     Merchant.find_each do |merchant|
       next if MonthlyFee.exists?(merchant: merchant, month: @previous_month)
       print "."

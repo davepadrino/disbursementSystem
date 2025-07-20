@@ -9,6 +9,9 @@ namespace :disbursements do
     service.process_disbursements
   end
 
+  # this task takes AGES to process, I didn't find any better solution for the moment
+  # taking into account that this one will run ONCE and then we'll rely on the daily task above
+  # this of course needs to be improved via batching or parallel processing
   desc 'Process all historical disbursements'
   task process_all: :environment do |task, args|
     start_date = Merchant.minimum(:live_on)
