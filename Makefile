@@ -61,6 +61,11 @@ monthly_fees:
 	@echo "Running monthly_fee tasks..."
 	docker-compose exec web bundle exec rake monthly_fees:process
 
+# Generate reports
+report:
+	@echo "Generating reports..."
+	docker-compose exec web bundle exec rails runner scripts/report.rb
+
 # Reset database
 db-reset:
 	docker-compose exec web bundle exec rails db:drop db:create db:migrate
