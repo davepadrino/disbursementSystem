@@ -57,10 +57,13 @@ def import_orders
   end
   
   Order.insert_all(orders_batch) if orders_batch.any?
-  
-  p "Imported #{Order.count} orders"
+  if Order.count.zero?
+    p "No orders found in the CSV file or no merchants were added first"
+  else
+    p "Imported #{Order.count} orders"
+  end
 end
 p "Starting data import..."
 
-# import_merchants
+import_merchants
 import_orders
