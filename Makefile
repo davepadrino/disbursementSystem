@@ -56,6 +56,11 @@ disbursements:
 	@echo "Running disbursement tasks..."
 	docker-compose exec web bundle exec rake disbursements:process
 
+# Run monthly_fee tasks manually (for testing/development purposes)
+monthly_fees:
+	@echo "Running monthly_fee tasks..."
+	docker-compose exec web bundle exec rake monthly_fees:process
+
 # Reset database
 db-reset:
 	docker-compose exec web bundle exec rails db:drop db:create db:migrate
