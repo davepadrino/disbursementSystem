@@ -24,17 +24,25 @@ No-SQL DB was considered (documents or even graphs based) but since the relation
 
 ## Improvements
 
-- Don't know if I'll have time to do this, but an improvement we could do to improve times given the orders table, is create partitions in the table by merchant so the queries are quicker.
+### Some of the improvements i'd do in a real life app, but didn't want to apply them at the moment.
 
-...
+- Create partitions in the `orders` table by merchant so the queries are quicker. (for big number of records)
+- Proper logging for production debugging
+- A kubernetes (for instance) cronjob instead of a native one to run the task, will give us more control and on-demand start.
+- Some Ids in the DB must be UUIDs for security reasons (just in case we don't want to expose the number of records)
+- Add more tests, I added few of them for timing reasons.
+  ...
 
 ## Features
 
 - Setup a docker repository production ready for a rails app ✅
 - Setup data model ✅
 - Create DB migrations ✅
-- Inject data via rake task and store it in DB
-- Add business logic services / controllers and routes
+- Inject data via rake task and store it in DB ✅
+- Add disburshment logic ✅
+- Add monthtly fee logic
+- Add final report logic
+- Add daily processing task
 - Add test suite and specs
 
 ## Getting Started
@@ -162,3 +170,27 @@ According to my understanding of the problem, we have a relation like this:
 ```
 
 Use of AI: I used ChatGPT to move forward with DB models and migrations given the model and relations I created, I used it to move forward quickly and because I considered more important having created that data model and logic behind it than the tech itself, link [here](https://chatgpt.com/share/6877dc73-62dc-8011-9aa7-58f770d0d02e). This probably will change if need adaptations (not trusting 100% AI ~yet~)
+
+## Additional information
+
+### Create new orders (to validate that the fees are calculated in creation time)
+
+Specfied an existing merchant since an order cannot exist without it
+
+```rb
+Order.create!(id: "abcdfeg", merchant_id: "86312006-4d7e-45c4-9c28-788f4aa68a62", amount: "800".to_f, created_at: DateTime.parse("2025-07-17"))
+```
+
+### Validate amounts and fees in disbursements manually to corroborate the algoritm works
+
+```sql
+SELECT
+   COUNT(*) as order_count,
+   SUM(o.amount) as calculated_total,
+   SUM(o.commission_fee) as calculated_commission,
+   (SUM(o.amount) - SUM(o.commission_fee)) as calculated_net,
+   MIN(DATE(o.created_at)) as first_order_date,
+   MAX(DATE(o.created_at)) as last_order_date
+FROM orders o
+WHERE o.disbursement_id = '<insert_disbursement_id>';
+```

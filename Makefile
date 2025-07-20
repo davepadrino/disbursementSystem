@@ -51,6 +51,11 @@ test-file:
 	@echo "Running tests..."
 	docker-compose exec web bundle exec rspec ${file}
 
+# Run disbursement tasks manually (for testing/development purposes)
+disbursements:
+	@echo "Running disbursement tasks..."
+	docker-compose exec web bundle exec rake disbursements:process
+
 # Reset database
 db-reset:
 	docker-compose exec web bundle exec rails db:drop db:create db:migrate
