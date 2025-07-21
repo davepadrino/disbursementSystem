@@ -1,6 +1,6 @@
 class Merchant < ApplicationRecord
   self.primary_key = :id
-   # `dependent: :destroy` for avoiding orphaned records
+   # INFO: `dependent: :destroy` for avoiding orphaned records
   has_many :orders, dependent: :destroy
   has_many :disbursements, dependent: :destroy
   has_one :monthly_fees, dependent: :destroy

@@ -5,11 +5,11 @@ namespace :disbursements do
 
     service = DisbursementService.new(date)
     p "Processing disbursements for #{@date}..."
-    # separated the logic into smaller services in pro of reusability and testability
+    # INFO: separated the logic into smaller services in pro of reusability and testability
     service.process_disbursements
   end
 
-  # this task takes AGES to process, I didn't find any better solution for the moment
+  # INFO: this task takes AGES to process, I didn't find any better solution for the moment
   # taking into account that this one will run ONCE and then we'll rely on the daily task above
   # this of course needs to be improved via batching or parallel processing
   desc 'Process all historical disbursements'

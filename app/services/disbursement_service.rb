@@ -9,7 +9,7 @@ class DisbursementService
   end
 
   def process_disbursements
-    # to aovid matrix-like structures
+    # INFO: to aovid matrix-like structures
     FREQUENCIES.flat_map do |frequency, processor|
       merchants = find_merchants_by_frequency(frequency)
       send(processor, merchants)
@@ -42,7 +42,7 @@ class DisbursementService
       )
   end
 
-  # With null values in `disbursement_id`, we can know which orders haven't been disbursed yet.
+  # INFO: With null values in `disbursement_id`, we can know which orders haven't been disbursed yet.
   # This method updates the `Orders` table with the disbursement_id.
   def update_orders_with_disbursement(orders, disbursement)
     orders.update_all(disbursement_id: disbursement.id)
@@ -53,7 +53,7 @@ class DisbursementService
     orders = OrderService.new(merchant, @date).find_undisbursed_orders
     return nil if orders.empty?
 
-    # # I was not familiar with the `tap` method, i investigated and now i love it for this case! :D
+    # INFO: I was not familiar with the `tap` method, i investigated and now i love it for this case! :D
     create_disbursement(merchant, orders).tap do |disbursement|
       update_orders_with_disbursement(orders, disbursement)
     end

@@ -12,7 +12,7 @@ namespace :monthly_fees do
     task process_all: :environment do |task, args|
       start_date = Merchant.minimum(:live_on)
       end_date = Date.current
-      # as months pass, we'll need to improve this method to process by batches or in parallel
+      # INFO: as months pass, we'll need to improve this method to process by batches or in parallel
 
       current_date = start_date
 

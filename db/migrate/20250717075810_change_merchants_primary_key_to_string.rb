@@ -7,7 +7,7 @@ class ChangeMerchantsPrimaryKeyToString < ActiveRecord::Migration[7.2]
     change_column :disbursements, :merchant_id, :string
     change_column :orders, :merchant_id, :string
     change_column :monthly_fees, :merchant_id, :string
-    # Add new string column for id (i forgot to add it in the original migration)
+    # INFO: Add new string column for id (i forgot to add it in the original migration)
     add_column :merchants, :new_id, :string
 
     remove_column :merchants, :id

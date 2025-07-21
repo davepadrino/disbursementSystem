@@ -1,8 +1,8 @@
 # Makefile for managing the disbursement system application
 
-.PHONY: setup build up stop logs console migrate db-reset health clean
+.PHONY: setup build up stop logs console generate-migration migrate import-data test-file disbursements disbursements-all monthly-fees monthly-all report db-reset health clean
 
-# Initial setup - builds and starts the app
+# Initial setup - builds, starts the containers, migrates the database, and imports initial data
 setup: build up migrate import-data
 
 # Build Docker image

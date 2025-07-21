@@ -1,5 +1,5 @@
 def create_report
-  years = (2022..Date.current.year).to_a #automatically includes new years as they come
+  years = (2022..Date.current.year).to_a # INFO: automatically includes new years as they come
 
   years.map do |year|
     disbursement = Disbursement.where('YEAR(disbursement_date) = ?', year)

@@ -27,7 +27,7 @@ def import_orders
     merchant_mapping[merchant.reference] = merchant.id
   end
  
-  # defining a batch size for bulk insert
+  # INFO: defining a batch size for bulk insert
   # This helps to avoid memory issues with large datasets
   # and improves performance by reducing the number of database transactions.
   batch_size = 1000
@@ -41,7 +41,7 @@ def import_orders
       id: row['id'],
       merchant_id: merchant_id,
       amount: row['amount'].to_f,
-       # better to calculate `commission_fee` in load time than having to read the whole orders later
+       # INFO: better to calculate `commission_fee` in load time than having to read the whole orders later
        # also i've done this here to calculate the comission for the existing orders
        # since `insert_all` bypasses ActiveRecord callbacks and validations.
       commission_fee: CommissionCalculator.new(row['amount']).calculate,

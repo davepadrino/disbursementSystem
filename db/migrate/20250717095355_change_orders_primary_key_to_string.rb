@@ -1,6 +1,6 @@
 class ChangeOrdersPrimaryKeyToString < ActiveRecord::Migration[7.2]
     def up
-    # Add new string column for id (i forgot to add it in the original migration)
+    # INFO: Add new string column for id (i forgot to add it in the original migration)
     add_column :orders, :new_id, :string
 
     remove_column :orders, :id

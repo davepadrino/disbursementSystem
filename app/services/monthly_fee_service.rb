@@ -5,7 +5,7 @@ class MonthlyFeeService
   end
 
   def calculate_monthly_fees
-    # decided to use find_each to avoid loading all merchants into memory at once (in case of large datasets)
+    # INFO: decided to use find_each to avoid loading all merchants into memory at once (in case of large datasets)
     Merchant.find_each do |merchant|
       next if MonthlyFee.exists?(merchant: merchant, month: @previous_month)
       print "."
@@ -35,7 +35,7 @@ end
   end
 
   def monthly_fee_charged(fees_earned, minimum_fee_required)
-    return 0 if fees_earned >= minimum_fee_required # if merchant earned more than the minimum fee, no fee is charged
+    return 0 if fees_earned >= minimum_fee_required # INFO: if merchant earned more than the minimum fee, no fee is charged
     minimum_fee_required - fees_earned
   end
 end
